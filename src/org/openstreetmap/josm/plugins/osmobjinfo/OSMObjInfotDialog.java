@@ -44,6 +44,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
     protected JLabel lbLinkUser;
     protected JLabel lbLinnkIdobj;
     protected JLabel lbLinkMapillary;
+    protected JLabel lbLinkiD;
     protected JLabel lbLinkOSMcamp;
     protected JLabel lbLinkIdChangeset;
     protected JLabel lbCopyUser;
@@ -55,7 +56,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
     protected JLabel lbOsmDeepHistory;
     protected JLabel lbUserOsmComments;
 
-    protected JLabel lbMapillary;
+    protected JLabel lbCoordinates;
     protected JLabel lbOsmcamp;
 
     String typeObj;
@@ -93,7 +94,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
         panel.add(lbTimestamp);
 
         panel.add(new JLabel(tr("Images")));
-        lbMapillary = new JLabel();
+        lbCoordinates = new JLabel();
         lbOsmcamp = new JLabel();
         panel.add(MapillaryImages());
 
@@ -323,7 +324,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     lbIdobj.setText(txtIdobject);
                     lbVersion.setText(txtVersion);
                     lbTimestamp.setText(txtTimestamp);
-                    lbMapillary.setText(coordinates);
+                    lbCoordinates.setText(coordinates);
 
                 }
             });
@@ -351,28 +352,36 @@ public class OSMObjInfotDialog extends ToggleDialog {
 
     private JPanel MapillaryImages() {
         JPanel jpIMapillary = new JPanel(new BorderLayout());
-        lbMapillary = new JLabel();
+        lbCoordinates = new JLabel();
+        lbLinkiD = new JLabel(ImageProvider.get("dialogs", "id.png"));
         lbLinkMapillary = new JLabel(ImageProvider.get("dialogs", "mapillary.png"));
         lbLinkOSMcamp = new JLabel(ImageProvider.get("dialogs", "openstreetcam.png"));
         lbLinkMapillary.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbLinkOSMcamp.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JPanel jpIMapillaryOptions = new JPanel(new GridLayout(1, 2, 5, 5));
+        JPanel jpIMapillaryOptions = new JPanel(new GridLayout(1, 3, 5, 5));
+        jpIMapillaryOptions.add(lbLinkiD);
         jpIMapillaryOptions.add(lbLinkMapillary);
         jpIMapillaryOptions.add(lbLinkOSMcamp);
         //add
-        jpIMapillary.add(lbMapillary, BorderLayout.LINE_START);
+        jpIMapillary.add(lbCoordinates, BorderLayout.LINE_START);
         jpIMapillary.add(jpIMapillaryOptions, BorderLayout.LINE_END);
         //id obj actions 
+        lbLinkiD.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowseriD(typeObj, lbIdobj.getText(), lbCoordinates.getText());
+            }
+        });
         lbLinkMapillary.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                OSMObjInfoActions.openinBrowserMapillary(lbMapillary.getText());
+                OSMObjInfoActions.openinBrowserMapillary(lbCoordinates.getText());
             }
         });
         lbLinkOSMcamp.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                OSMObjInfoActions.openinBrowserOpenstreetcam(lbMapillary.getText());
+                OSMObjInfoActions.openinBrowserOpenstreetcam(lbCoordinates.getText());
             }
         });
         return jpIMapillary;

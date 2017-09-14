@@ -116,4 +116,11 @@ public class OSMObjInfoActions {
         OpenBrowser.displayUrl(url);
     }
 
+    static void openinBrowseriD(String typeObj, String idobj, String coords) {
+        String[] arrCoords = coords.split(",");
+        String url = "https://hey.mapbox.com/iD-internal/#background=Bing&id=" + typeObj.split("")[0] + idobj + "&map=19.65/" + arrCoords[0] + "/" + arrCoords[1];
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+    }
+
 }
