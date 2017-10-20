@@ -1,34 +1,29 @@
 package org.openstreetmap.josm.plugins.osmobjinfo;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import static org.openstreetmap.josm.tools.I18n.tr;
-import java.awt.GridLayout;
-import java.awt.PopupMenu;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.SelectionChangedListener;
-import org.openstreetmap.josm.data.coor.EastNorth;
+import org.openstreetmap.josm.data.UserIdentityManager;
 import org.openstreetmap.josm.data.osm.DataSet;
-import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
-import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.layer.NoteLayer;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Shortcut;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
+import static org.openstreetmap.josm.gui.MainApplication.getMap;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 /**
  *
@@ -105,7 +100,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
             }
         });
 
-        Main.map.mapView.addMouseListener(new MouseAdapter() {
+        getMap().mapView.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 getInfoNotes(e);
@@ -297,7 +292,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
                         user = element.getUser().getName();
                         timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
                     } catch (NullPointerException e) {
-                        user = JosmUserIdentityManager.getInstance().getUserName();
+                        user = UserIdentityManager.getInstance().getUserName();
                     }
                     idObject = String.valueOf(element.getId());
                     version = String.valueOf(element.getVersion());
@@ -331,8 +326,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
     }
 
     public void getInfoNotes(MouseEvent e) {
-        if (!Main.getLayerManager().getLayersOfType(NoteLayer.class).isEmpty()) {
-            NoteLayer noteLayer = Main.getLayerManager().getLayersOfType(NoteLayer.class).get(0);
+        if (!getLayerManager().getLayersOfType(NoteLayer.class).isEmpty()) {
+            NoteLayer noteLayer = getLayerManager().getLayersOfType(NoteLayer.class).get(0);
             noteLayer.mouseClicked(e);
             if (!noteLayer.getNoteData().getNotes().isEmpty() && noteLayer.getNoteData().getSelectedNote() != null) {
                 typeObj = "note";
