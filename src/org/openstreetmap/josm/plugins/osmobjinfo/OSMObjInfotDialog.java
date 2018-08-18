@@ -1,18 +1,13 @@
 package org.openstreetmap.josm.plugins.osmobjinfo;
 
-import org.openstreetmap.josm.data.SelectionChangedListener;
-import org.openstreetmap.josm.data.UserIdentityManager;
-import org.openstreetmap.josm.data.osm.DataSet;
-import org.openstreetmap.josm.data.osm.OsmPrimitive;
-import org.openstreetmap.josm.gui.SideButton;
-import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
-import org.openstreetmap.josm.gui.layer.NoteLayer;
-import org.openstreetmap.josm.gui.util.GuiHelper;
-import org.openstreetmap.josm.tools.ImageProvider;
-import org.openstreetmap.josm.tools.Shortcut;
+import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
+import static org.openstreetmap.josm.gui.MainApplication.getMap;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,9 +16,18 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
-import static org.openstreetmap.josm.gui.MainApplication.getMap;
-import static org.openstreetmap.josm.tools.I18n.tr;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.openstreetmap.josm.data.UserIdentityManager;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.event.SelectionEventManager;
+import org.openstreetmap.josm.gui.SideButton;
+import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
+import org.openstreetmap.josm.gui.layer.NoteLayer;
+import org.openstreetmap.josm.gui.util.GuiHelper;
+import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.Shortcut;
 
 /**
  *
@@ -93,12 +97,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
         panel.add(MapillaryImages());
 
         createLayout(panel, false, Arrays.asList(new SideButton[]{}));
-        DataSet.addSelectionListener(new SelectionChangedListener() {
-            @Override
-            public void selectionChanged(Collection<? extends OsmPrimitive> clctn) {
-                selection(clctn);
-            }
-        });
+        SelectionEventManager.getInstance().addSelectionListener(event -> selection(event.getSelection()));
 
         getMap().mapView.addMouseListener(new MouseAdapter() {
             @Override
