@@ -102,6 +102,7 @@ public class OSMObjInfoActions {
     }
 
     public static void openinBrowserMapillary(String coords) {
+        if (coords == null || coords.isEmpty()) return;
         String[] arrCoords = coords.split(",");
         String url = "https://www.mapillary.com/app/?lat=" + arrCoords[0] + "&lng=" + arrCoords[1] + "&z=20&focus=map&dateFrom=2017-01-01";
         new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
@@ -110,6 +111,7 @@ public class OSMObjInfoActions {
     }
 
     public static void openinBrowserOpenstreetcam(String coords) {
+        if (coords == null || coords.isEmpty()) return;
         String[] arrCoords = coords.split(",");
         String url = "http://openstreetcam.org/map/@" + arrCoords[0] + "," + arrCoords[1] + ",18z";
         new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
