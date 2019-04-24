@@ -3,8 +3,12 @@ package org.openstreetmap.josm.plugins.osmobjinfo;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import org.openstreetmap.josm.gui.Notification;
+import org.openstreetmap.josm.plugins.osmobjinfo.OSMObjInfotDialog.AllOsmObjInfo;
+
 import static org.openstreetmap.josm.tools.I18n.tr;
 import org.openstreetmap.josm.tools.OpenBrowser;
 
@@ -13,6 +17,8 @@ import org.openstreetmap.josm.tools.OpenBrowser;
  * @author ruben
  */
 public class OSMObjInfoActions {
+    public static final String COPY = "Copy: {0}";
+    public static final String OPEN_IN_BROWSER = "Open in browser {0}";
 
     public static void copyUser(String user) {
         if (!user.isEmpty()) {
@@ -20,7 +26,7 @@ public class OSMObjInfoActions {
             StringSelection selection = new StringSelection(linkUser);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-            new Notification(tr("Copy: " + linkUser)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+            new Notification(tr(COPY, linkUser)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
         }
     }
 
@@ -45,11 +51,11 @@ public class OSMObjInfoActions {
 
     public static void copyChangeset(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            String linkchangeset = "https://www.openstreetmap.org/changeset/" + idChangeset;
+            String linkchangeset = "https://www.openstreetmap.org/changeset/".concat(idChangeset);
             StringSelection selection = new StringSelection(linkchangeset);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-            new Notification(tr("Copy: " + linkchangeset)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+            new Notification(tr(COPY, linkchangeset)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
         }
     }
 
@@ -65,25 +71,48 @@ public class OSMObjInfoActions {
         }
     }
 
-    public static void copyIdobj(String typeObj, String idobj) {
-        if (typeObj != null && !idobj.isEmpty()) {
-            String linkobjid = "https://www.openstreetmap.org/" + typeObj + "/" + idobj;
-            StringSelection selection = new StringSelection(linkobjid);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, selection);
-            new Notification(tr("Copy: " + linkobjid)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+    public static void copyIdobj(List<AllOsmObjInfo> osmObjInfo) {
+        if (osmObjInfo == null || osmObjInfo.isEmpty()) return;
+        String linkobjid = "";
+        StringBuilder builder = new StringBuilder();
+        for (AllOsmObjInfo object : osmObjInfo) {
+            builder.append("https://www.openstreetmap.org/")
+                .append(object.typeObj).append("/").append(object.idObject);
+            if (osmObjInfo.indexOf(object) < osmObjInfo.size() - 2) {
+                builder.append(", ");
+            }
+            if (osmObjInfo.indexOf(object) == osmObjInfo.size() - 2) {
+                if (osmObjInfo.size() == 2) {
+                    builder.append(" ");
+                } else {
+                    builder.append(", ");
+                }
+                builder.append(tr("and"));
+                builder.append(" ");
+            }
+        }
+        linkobjid = builder.toString();
+        StringSelection selection = new StringSelection(linkobjid);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, selection);
+        new Notification(tr(COPY, linkobjid)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+    }
+
+    public static void openinBrowserIdobj(List<AllOsmObjInfo> osmObjInfo) {
+        if (osmObjInfo.size() > 5 || osmObjInfo.isEmpty()) return;
+        for (AllOsmObjInfo info : osmObjInfo) {
+            if (info.typeObj != null && !info.idObject.isEmpty()) {
+                openInBrowser("https://www.openstreetmap.org/" + typeObj + "/" + idobj);
+            }
         }
     }
 
-    public static void openinBrowserIdobj(String typeObj, String idobj) {
-        if (typeObj != null && !idobj.isEmpty()) {
-            openInBrowser("https://www.openstreetmap.org/" + typeObj + "/" + idobj);
-        }
-    }
-
-    public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
-        if (typeObj != null && !idobj.isEmpty()) {
-            openInBrowser("https://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
+    public static void openinBrowserIdobjOsmDeepHistory(List<AllOsmObjInfo> osmObjInfo) {
+        if (osmObjInfo.size() > 5 || osmObjInfo.isEmpty()) return;
+        for (AllOsmObjInfo info : osmObjInfo) {
+            if (info.typeObj != null && !info.idObject.isEmpty()) {
+                openInBrowser("https://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
+            }
         }
     }
 
