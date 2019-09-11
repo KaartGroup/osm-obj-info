@@ -44,6 +44,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
     protected JLabel lbLinnkIdobj;
     protected JLabel lbLinkMapillary;
     protected JLabel lbLinkOSMcamp;
+    protected JLabel lbLinkYandex;
     protected JLabel lbLinkIdChangeset;
     protected JLabel lbCopyUser;
     protected JLabel lbCopyIdobj;
@@ -346,17 +347,21 @@ public class OSMObjInfotDialog extends ToggleDialog {
     private JPanel MapillaryImages() {
         JPanel jpIMapillary = new JPanel(new BorderLayout());
         lbMapillary = new JLabel();
-        lbLinkMapillary = new JLabel(ImageProvider.get("dialogs", "mapillary.png"));
-        lbLinkOSMcamp = new JLabel(ImageProvider.get("dialogs", "openstreetcam.png"));
+        lbLinkMapillary = new JLabel(ImageProvider.get("dialogs", "mapillary"));
+        lbLinkOSMcamp = new JLabel(ImageProvider.get("dialogs", "openstreetcam"));
+        // TODO replace with real image
+        lbLinkYandex = new JLabel(ImageProvider.get("dialogs", "yandex"));
         lbLinkMapillary.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbLinkOSMcamp.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbLinkYandex.setCursor(new Cursor(Cursor.HAND_CURSOR));
         JPanel jpIMapillaryOptions = new JPanel(new GridLayout(1, 2, 5, 5));
         jpIMapillaryOptions.add(lbLinkMapillary);
         jpIMapillaryOptions.add(lbLinkOSMcamp);
+        jpIMapillaryOptions.add(lbLinkYandex);
         //add
         jpIMapillary.add(lbMapillary, BorderLayout.LINE_START);
         jpIMapillary.add(jpIMapillaryOptions, BorderLayout.LINE_END);
-        //id obj actions 
+        //id obj actions
         lbLinkMapillary.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -367,6 +372,12 @@ public class OSMObjInfotDialog extends ToggleDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 OSMObjInfoActions.openinBrowserOpenstreetcam(lbMapillary.getText());
+            }
+        });
+        lbLinkYandex.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openInBrowserYandex(lbMapillary.getText());
             }
         });
         return jpIMapillary;

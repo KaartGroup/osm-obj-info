@@ -16,7 +16,7 @@ public class OSMObjInfoActions {
 
     public static void copyUser(String user) {
         if (!user.isEmpty()) {
-            String linkUser = "http://www.openstreetmap.org/user/" + user;
+            String linkUser = "https://www.openstreetmap.org/user/" + user;
             StringSelection selection = new StringSelection(linkUser);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
@@ -26,26 +26,20 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserUser(String user) {
         if (!user.isEmpty()) {
-            String url = "http://www.openstreetmap.org/user/" + user;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://www.openstreetmap.org/user/".concat(user));
         }
 
     }
 
     public static void openinBrowserUserNeis(String user) {
         if (!user.isEmpty()) {
-            String url = "http://hdyc.neis-one.org/?" + user;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://hdyc.neis-one.org/?".concat(user));
         }
     }
 
     static void openinBrowserUserOsmComments(String user) {
         if (!user.isEmpty()) {
-            String url = "https://www.mapbox.com/osm-comments/#/changesets/?q=users:" + user;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser( "https://www.mapbox.com/osm-comments/#/changesets/?q=users:".concat(user));
         }
     }
 
@@ -61,17 +55,13 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserChangeset(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            String url = "https://www.openstreetmap.org/changeset/" + idChangeset;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://www.openstreetmap.org/changeset/".concat(idChangeset));
         }
     }
 
     public static void openinBrowserChangesetMap(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            String url = "https://osmcha.mapbox.com/" + idChangeset;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://osmcha.mapbox.com/".concat(idChangeset));
         }
     }
 
@@ -87,35 +77,36 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserIdobj(String typeObj, String idobj) {
         if (typeObj != null && !idobj.isEmpty()) {
-            String url = "https://www.openstreetmap.org/" + typeObj + "/" + idobj;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://www.openstreetmap.org/" + typeObj + "/" + idobj);
         }
     }
 
     public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
         if (typeObj != null && !idobj.isEmpty()) {
-            String url = "http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj;
-            new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-            OpenBrowser.displayUrl(url);
+            openInBrowser("https://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
         }
     }
 
     public static void openinBrowserMapillary(String coords) {
         if (coords == null || coords.isEmpty()) return;
         String[] arrCoords = coords.split(",");
-        String url = "https://www.mapillary.com/app/?lat=" + arrCoords[0] + "&lng=" + arrCoords[1] + "&z=20&focus=map&dateFrom=2017-01-01";
-        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-        OpenBrowser.displayUrl(url);
-
+        openInBrowser("https://www.mapillary.com/app/?lat=" + arrCoords[0] + "&lng=" + arrCoords[1] + "&z=20&focus=map&dateFrom=2017-01-01");
     }
 
     public static void openinBrowserOpenstreetcam(String coords) {
         if (coords == null || coords.isEmpty()) return;
         String[] arrCoords = coords.split(",");
-        String url = "http://openstreetcam.org/map/@" + arrCoords[0] + "," + arrCoords[1] + ",18z";
-        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
-        OpenBrowser.displayUrl(url);
+        openInBrowser("https://openstreetcam.org/map/@" + arrCoords[0] + "," + arrCoords[1] + ",18z");
     }
 
+    public static void openInBrowserYandex(String coords) {
+        if (coords == null || coords.isEmpty()) return;
+        String[] arrCoords = coords.split(",");
+        openInBrowser("https://yandex.com/maps/?l=stv,sta&ll=" + arrCoords[1] + "," + arrCoords[0] + "&z=18");
+    }
+
+    private static void openInBrowser(String url) {
+        new Notification(tr("Open in browser {0}", url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+    }
 }
