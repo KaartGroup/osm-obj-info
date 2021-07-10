@@ -232,7 +232,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
 
     private JPanel buildidObject() {
 
-        //OBJ ID 
+        //OBJ ID
         JPanel jpIdobj = new JPanel(new BorderLayout());
 
         lbIdobj = new JLabel();
@@ -252,7 +252,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
         jpIdobj.add(lbIdobj, BorderLayout.LINE_START);
         jpIdobj.add(jpIdobjOptions, BorderLayout.LINE_END);
 
-        //id obj actions 
+        //id obj actions
         lbLinnkIdobj.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -290,7 +290,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     typeObj = element.getType().toString();
                     try {
                         user = element.getUser().getName();
-                        timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
+                        timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a")
+                                .format(element.getInstant().toEpochMilli());
                     } catch (NullPointerException e) {
                         user = UserIdentityManager.getInstance().getUserName();
                     }
@@ -339,7 +340,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     lbIdobj.setText(Long.toString(noteLayer.getNoteData().getSelectedNote().getId()));
                 }
                 lbVersion.setText("");
-                lbTimestamp.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(noteLayer.getNoteData().getSelectedNote().getCreatedAt()));
+                lbTimestamp.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a")
+                        .format(noteLayer.getNoteData().getSelectedNote().getCreatedAt().toEpochMilli()));
             }
         }
     }
