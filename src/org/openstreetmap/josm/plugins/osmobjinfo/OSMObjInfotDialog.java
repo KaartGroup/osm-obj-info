@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -28,6 +28,7 @@ import org.openstreetmap.josm.gui.layer.NoteLayer;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Shortcut;
+import org.openstreetmap.josm.tools.date.DateUtils;
 
 /**
  *
@@ -286,12 +287,11 @@ public class OSMObjInfotDialog extends ToggleDialog {
 
             for (OsmPrimitive element : selection) {
                 if (!element.isNew()) {
-
                     typeObj = element.getType().toString();
                     try {
                         user = element.getUser().getName();
-                        timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a")
-                                .format(element.getInstant().toEpochMilli());
+                        timestamp = DateUtils.getDateTimeFormatter(FormatStyle.MEDIUM, FormatStyle.SHORT)
+                                .format(element.getInstant());
                     } catch (NullPointerException e) {
                         user = UserIdentityManager.getInstance().getUserName();
                     }
@@ -301,7 +301,6 @@ public class OSMObjInfotDialog extends ToggleDialog {
 
                     DecimalFormat df = new DecimalFormat("#.00000");
                     coordinates = df.format(element.getBBox().getCenter().lat()) + "," + df.format(element.getBBox().getCenter().lon());
-
                 }
             }
 
@@ -340,8 +339,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     lbIdobj.setText(Long.toString(noteLayer.getNoteData().getSelectedNote().getId()));
                 }
                 lbVersion.setText("");
-                lbTimestamp.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a")
-                        .format(noteLayer.getNoteData().getSelectedNote().getCreatedAt().toEpochMilli()));
+                lbTimestamp.setText(DateUtils.getDateTimeFormatter(FormatStyle.MEDIUM, FormatStyle.SHORT)
+                        .format(noteLayer.getNoteData().getSelectedNote().getCreatedAt()));
             }
         }
     }
