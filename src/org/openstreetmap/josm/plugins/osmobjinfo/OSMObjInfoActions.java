@@ -52,7 +52,7 @@ public class OSMObjInfoActions {
 
     static void openinBrowserUserOsmComments(String user) {
         if (!user.isEmpty()) {
-            openInBrowser("https://www.mapbox.com/osm-comments/#/changesets/?q=users:".concat(user));
+            openInBrowser("https://resultmaps.neis-one.org/osm-discussion-comments?commented&user=".concat(user));
         }
     }
 
