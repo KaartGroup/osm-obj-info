@@ -74,7 +74,7 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserChangesetMap(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            openInBrowser("https://osmcha.mapbox.com/".concat(idChangeset));
+            openInBrowser("https://osmcha.org/".concat(idChangeset));
         }
     }
 
