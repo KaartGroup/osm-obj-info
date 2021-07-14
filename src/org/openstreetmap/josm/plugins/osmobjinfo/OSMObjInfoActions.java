@@ -29,7 +29,7 @@ public class OSMObjInfoActions {
 
     public static void copyUser(String user) {
         if (!user.isEmpty()) {
-            String linkUser = "https://www.openstreetmap.org/user/" + user;
+            String linkUser = Config.getUrls().getBaseUserUrl().concat("/").concat(user);
             StringSelection selection = new StringSelection(linkUser);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
@@ -39,7 +39,7 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserUser(String user) {
         if (!user.isEmpty()) {
-            openInBrowser("https://www.openstreetmap.org/user/".concat(user));
+            openInBrowser(Config.getUrls().getBaseUserUrl().concat("/").concat(user));
         }
 
     }
@@ -58,7 +58,7 @@ public class OSMObjInfoActions {
 
     public static void copyChangeset(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            String linkchangeset = "https://www.openstreetmap.org/changeset/".concat(idChangeset);
+            String linkchangeset = Config.getUrls().getBaseBrowseUrl().concat("/changeset/").concat(idChangeset);
             StringSelection selection = new StringSelection(linkchangeset);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
@@ -68,7 +68,7 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserChangeset(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            openInBrowser("https://www.openstreetmap.org/changeset/".concat(idChangeset));
+            openInBrowser(Config.getUrls().getBaseBrowseUrl().concat("/changeset/").concat(idChangeset));
         }
     }
 
@@ -83,8 +83,8 @@ public class OSMObjInfoActions {
         String linkobjid = "";
         StringBuilder builder = new StringBuilder();
         for (AllOsmObjInfo object : osmObjInfo) {
-            builder.append("https://www.openstreetmap.org/")
-                .append(object.typeObj).append("/").append(object.idObject);
+            builder.append(Config.getUrls().getBaseBrowseUrl()).append('/')
+                .append(object.typeObj).append('/').append(object.idObject);
             if (osmObjInfo.indexOf(object) < osmObjInfo.size() - 2) {
                 builder.append(", ");
             }
@@ -149,7 +149,7 @@ public class OSMObjInfoActions {
             return;
         for (AllOsmObjInfo info : osmObjInfo) {
             if (info.typeObj != null && !info.idObject.isEmpty()) {
-                openInBrowser("https://www.openstreetmap.org/" + info.typeObj + "/" + info.idObject);
+                openInBrowser(Config.getUrls().getBaseBrowseUrl().concat("/").concat(info.typeObj).concat("/").concat(info.idObject));
             }
         }
     }
